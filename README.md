@@ -2,6 +2,8 @@
 
 ### Bare bones ajax image uploader
 
+### Allows additional but limited form data via $_GET variables
+
 ### Uploads multiple images via ajax
 
 Applies naming convention to uploaded files:
