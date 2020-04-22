@@ -47,14 +47,15 @@
 				},
 			});
 			// helper function to encode data for url
-			function encodeQueryData(data) {
-				var uri = [];
-				$.each(data, function(key, value){
-					uri.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
-				})
-				return uri.join("&");
-			}
 		});
+		
+		function encodeQueryData(data) {
+			var uri = [];
+			$.each(data, function(key, value){
+				uri.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+			})
+			return uri.join("&");
+		}
 	</script>
 </body>
 </html>
