@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+</head>
+<body>
+	<input type="hidden" id="recordID" value="101">
+	<input type="file" id="fileUploadField" multiple accept="image/*">
+	<button id="processUploadsBTN">Upload Files</button>
+	<script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
+	<script>
+		$("#processUploadsBTN").on("click", function (e) {
+
+			var cfg = {
+				formData: new FormData(),						// formdata object
+				fileUploadField: $("#fileUploadField"),	// jQuery object input[file]
+				handlerUrl: "./handler.php",					// path to php handler
+				uploadFieldName: "image",						// image0, image1, image2 etc
+				additionalData: { 								// limited space ~2000 chars
+					foo: "bar",
+					recordID: $("#recordID").val(),
+				}
+			};
+			// collect all the files from file input
+			$.each(cfg.fileUploadField[0].files, function (fileIndex, fileObject) {
+				// append files to formdata object
+				cfg.formData.append(cfg.uploadFieldName + fileIndex, fileObject);
+			});
+			
+			// send fairly standard ajax request
+			$.ajax({
+				type: "POST",
+				url: cfg.handlerUrl + "?" + encodeQueryData(cfg.additionalData),
+				processData: false,
+				contentType: false,
+				data: cfg.formData,
+				success: function (response) {
+					if(response){
+						console.log(response);
+					}
+				},
+				error: function (err) {
+					if(err){
+						console.log(err);
+					}
+				},
+			});
+			// helper function to encode data for url
+			function encodeQueryData(data) {
+				var uri = [];
+				$.each(data, function(key, value){
+					uri.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+				})
+				return uri.join("&");
+			}
+		});
+	</script>
+</body>
+</html>
